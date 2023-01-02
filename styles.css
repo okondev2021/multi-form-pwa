@@ -501,8 +501,8 @@
 /* mobile device */
 @media (max-width:768px){
 
-    .error_label{
-        display: none
+    .error_label, label{
+       font-size: 0.9em
     }
 
     .container{
@@ -558,7 +558,7 @@
         width: 90%;
         border-radius: 7px;
         margin-bottom: 6em;
-        margin-top: -4em;
+        margin-top: -5em;
         min-height: 70vh
     }
 
