@@ -61,24 +61,24 @@ document.addEventListener('DOMContentLoaded',function(){
 
     // sideBar navigation
     function nextStepBtn(number1){
-        // 
+        setTimeout(clear,2000)
         let inputFilelds =  document.querySelectorAll('input')
         const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
         if(allinputfields){
-            if(!email.value.includes('@')){
-                document.querySelector(`#label_2`).innerHTML = '@ is not included '
-                email.style.cssText = `border: 1px solid hsl(354, 84%, 57%)`
-            }
-            else{
+            if(email.value.includes('@')){
                 document.querySelectorAll('.stepsBtn').forEach(function(stepBtn){
-                    stepBtn.style.cssText = `background:transparent;color:white`
+                     stepBtn.style.cssText = `background:transparent;color:white`
                 })
                 document.querySelector(`#section_number${number1}`).style.cssText = `background:hsl(206, 94%, 87%);color:hsl(213, 96%, 18%)`
-        
+                        
                 document.querySelectorAll('.steps_section').forEach(function(nextbtn){
                     nextbtn.style.display = 'none'
                 })
                 document.querySelector(`#step_${number1}`).style.display = 'block' 
+            }
+            else{
+                document.querySelector(`#label_2`).innerHTML = '@ is not included '
+                email.style.cssText = `border: 1px solid hsl(354, 84%, 57%)`
             }
 
         }
@@ -116,21 +116,26 @@ document.addEventListener('DOMContentLoaded',function(){
     // 
     document.querySelector('#nextBtn_1').addEventListener('click',function(){
         // 
+        setTimeout(clear,2000)
         let inputFilelds =  document.querySelectorAll('input')
         const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
         if(allinputfields){
-            if(!email.value.includes('@')){
-                document.querySelector(`#label_2`).innerHTML = '@ is not included '
-                email.style.cssText = `border: 1px solid hsl(354, 84%, 57%)`
-            }
-            else{
+            if(email.value.includes('@')){
                 document.querySelectorAll('.error_label').forEach(function(error){
                     error.innerHTML = ""
+                })
+                document.querySelectorAll('input').forEach(function(inputfields){
+                    inputfields.style.cssText = `border: 1px solid hsla(213, 98%, 18%, 0.136);`
                 })
                 const nextBtn1 = document.querySelector('#nextBtn_1')
                 const value1 = nextBtn1.dataset.id
                 const value2 =  parseInt(nextBtn1.dataset.id) + 1
                 nextPreviousBtn(value1,value2) 
+            }
+            else{
+                // 
+                document.querySelector(`#label_2`).innerHTML = '@ is not included '
+                email.style.cssText = `border: 1px solid hsl(354, 84%, 57%)`
             }
 
         }
