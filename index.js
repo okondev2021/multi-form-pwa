@@ -1,16 +1,32 @@
 "use strict"
 document.addEventListener('DOMContentLoaded',function(){
 
-
     // GENERAL SETTINGS
-    // displays only the first section when  the page loads
+    // displays only the first section when  the page loads or second section if username already exists 
     document.querySelectorAll('.steps_section').forEach(function(stepsSection){
         stepsSection.style.display = 'none'
     })
-    // 
-    document.querySelector('#step_1').style.display = 'block'
-    // 
-    document.querySelector('#section_number1').style.cssText = `background:hsl(206, 94%, 87%);color:hsl(213, 96%, 18%)`
+    if (localStorage.getItem('Username')){
+        const userName = localStorage.getItem('Username')
+        alert(`WELCOME BACK ${userName.toUpperCase()}`)
+        // 
+        document.querySelector('#step_2').style.display = 'block'
+        // 
+        document.querySelector('#section_number2').style.cssText = `background:hsl(206, 94%, 87%);color:hsl(213, 96%, 18%)`
+        // adds users details to the input field since the users details already exists
+        document.querySelector('#name').value = localStorage.getItem('Username')
+        document.querySelector('#email').value = localStorage.getItem('Email')
+        document.querySelector('#telNumber').value = localStorage.getItem('Number')
+        document.querySelectorAll('input').forEach(function(input){
+            input.disabled = true
+        })
+    }
+    else{
+        // 
+        document.querySelector('#step_1').style.display = 'block'
+        // 
+        document.querySelector('#section_number1').style.cssText = `background:hsl(206, 94%, 87%);color:hsl(213, 96%, 18%)`
+    }
     // END
 
 
@@ -56,34 +72,54 @@ document.addEventListener('DOMContentLoaded',function(){
             nextPreviousBtn(value1,value2)
          })
     })
+    // END
+
+
+    function saveUserDetails(){
+        // get and save username in localstorage
+        const username = document.querySelector('#name').value 
+        const email = document.querySelector('#email').value
+        const telNumber = document.querySelector('#telNumber').value 
+        localStorage.setItem('Username', username)
+        localStorage.setItem('Email',email)
+        localStorage.setItem('Number',telNumber)
+    }
+
+    function displaySection(value){
+        document.querySelectorAll('.stepsBtn').forEach(function(stepBtn){
+            stepBtn.style.cssText = `background:transparent;color:white`
+        })
+       document.querySelector(`#section_number${value}`).style.cssText = `background:hsl(206, 94%, 87%);color:hsl(213, 96%, 18%)`
+               
+       document.querySelectorAll('.steps_section').forEach(function(nextbtn){
+           nextbtn.style.display = 'none'
+       })
+       document.querySelector(`#step_${value}`).style.display = 'block' 
+    }
  
-
-
     // sideBar navigation
     function nextStepBtn(number1){
-        setTimeout(clear,2000)
-        let inputFilelds =  document.querySelectorAll('input')
-        const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
-        if(allinputfields){
-            if(email.value.includes('@')){
-                document.querySelectorAll('.stepsBtn').forEach(function(stepBtn){
-                     stepBtn.style.cssText = `background:transparent;color:white`
-                })
-                document.querySelector(`#section_number${number1}`).style.cssText = `background:hsl(206, 94%, 87%);color:hsl(213, 96%, 18%)`
-                        
-                document.querySelectorAll('.steps_section').forEach(function(nextbtn){
-                    nextbtn.style.display = 'none'
-                })
-                document.querySelector(`#step_${number1}`).style.display = 'block' 
+        if(!localStorage.getItem('Username')){
+            setTimeout(clear,2000)
+            let inputFilelds =  document.querySelectorAll('input')
+            const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
+            if(allinputfields){
+                saveUserDetails()
+                if(email.value.includes('@')){
+                    displaySection(number1)
+                }
+                else{
+                    document.querySelector(`#label_2`).innerHTML = '@ is not included '
+                    email.style.cssText = `border: 1px solid hsl(354, 84%, 57%)`
+                }
+    
             }
             else{
-                document.querySelector(`#label_2`).innerHTML = '@ is not included '
-                email.style.cssText = `border: 1px solid hsl(354, 84%, 57%)`
+                errorInput()
             }
-
         }
         else{
-            errorInput()
+            displaySection(number1)
         }
 
     }
@@ -120,6 +156,7 @@ document.addEventListener('DOMContentLoaded',function(){
         let inputFilelds =  document.querySelectorAll('input')
         const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
         if(allinputfields){
+            saveUserDetails()
             if(email.value.includes('@')){
                 document.querySelectorAll('.error_label').forEach(function(error){
                     error.innerHTML = ""
@@ -280,9 +317,7 @@ document.addEventListener('DOMContentLoaded',function(){
         step4Data()
     })
 
-
     function step4Data(){
-
         // get data for selected stored in localstorage
         const planName = localStorage.getItem('paymentPlan')
         const planAmount = localStorage.getItem('paymentPlan_Amount')
@@ -342,6 +377,8 @@ document.addEventListener('DOMContentLoaded',function(){
             document.querySelector('.totalAmount').innerHTML = '$0'
         }
 
+        localStorage.setItem('TotalAmount',total)
+
     }
     // 
     document.querySelector('.change').addEventListener('click',function(){
@@ -357,12 +394,18 @@ document.addEventListener('DOMContentLoaded',function(){
     })
 
 
-    // display thank you section after confirming purchase
+    // display thank you section after confirming purchase and makes sure user has already selected a plan
     document.querySelector('.confirm').addEventListener('click',function(){
-        document.querySelectorAll('.steps_section').forEach(function(stepssection){
-            stepssection.style.display = 'none'
-        })
-        document.querySelector('#step_5').style.display = 'block'
+        const totalAmount = localStorage.getItem('TotalAmount')
+        if(totalAmount && totalAmount > 0){
+            document.querySelectorAll('.steps_section').forEach(function(stepssection){
+                stepssection.style.display = 'none'
+            })
+            document.querySelector('#step_5').style.display = 'block'
+        }
+        else{
+            alert('NO PLAN HAS BEEN SELECTED')
+        }
     })
 
 

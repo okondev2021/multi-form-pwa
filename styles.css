@@ -538,9 +538,7 @@
 
     .container .inner_container .left_div .steps_div{
         display: flex;
-        margin-bottom: 0em;
-        margin-left: 0.8em;
-        margin-right: 0.8em
+        margin: 0 0.8em
     }
 
     .container .inner_container .left_div .steps_div .stepsInfo{
@@ -550,29 +548,33 @@
     .container .inner_container .right_div .steps_section{
         position: static;
         height: 100%;
-    }
-
-    .container .inner_container .right_div .steps_section{
         background: rgb(255, 255, 255);
         padding: 1.5em;
         width: 90%;
         border-radius: 7px;
         margin-bottom: 6em;
         margin-top: -5em;
-        min-height: 70vh
+        min-height: 75vh
     }
 
     .container .inner_container .right_div .steps_section footer{
         position: absolute;
-        bottom: -10%;
+        bottom: 0%;
+        left: 0%;
         width: 100%;
         background: white;
-        left: 0%;;
     }
 
     .container .inner_container .right_div .steps_section:first-child footer{
         display: flex;
         justify-content: flex-end;
+        align-items: center;
+        padding: 1em 0.8em;
+    }
+
+    .container .inner_container .right_div .steps_section:nth-child(2) footer,.container .inner_container .right_div .steps_section:nth-child(3) footer,.container .inner_container .right_div .steps_section:nth-child(4) footer{
+        margin-bottom: 0em;
+        width: 100%;
         align-items: center;
         padding: 1em 0.8em;
     }
@@ -601,33 +603,25 @@
     .container .inner_container .right_div .steps_section:nth-child(2) main .planType div:nth-child(2){
         display: flex;
         justify-content: center;
-        /* align-items: center; */
         flex-direction: column;
         padding-bottom:1em
     }
 
-    .container .inner_container .right_div .steps_section:nth-child(2) footer{
-        margin-bottom: 0em;
-        width: 100%;
-        align-items: center;
-        padding: 1em 0.8em;
-    }
-
-    .container .inner_container .right_div .steps_section:nth-child(3) footer{
-        margin-bottom: 0em;
-        width: 100%;
-        align-items: center;
-        padding: 1em 0.8em;
-    }
-
-    .container .inner_container .right_div .steps_section:nth-child(4) footer{
-        margin-bottom: 0em;
-        width: 100%;
-        align-items: center;
-        padding: 1em 0.8em;
-    }
-
     .container .inner_container .right_div .steps_section:nth-child(5) main p{
         line-height: 1.3em
+    }
+}
+
+@media (max-width:768px) and (orientation:landscape){
+    .container .inner_container .left_div{
+        background: url('./assets/images/bg-sidebar-mobile.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        height: 35vh;
+    }
+
+    .container .inner_container .right_div .steps_section{
+        margin-top: 0em;
     }
 }
