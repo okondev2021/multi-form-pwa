@@ -14,7 +14,7 @@
     padding: 2em 0
 }
 
-/*  */
+/* next & prev btn */
 
 .next_btn{
     color: white;
@@ -222,11 +222,6 @@
     cursor: pointer;
 }
 
-.selectedPlan{
-    background: hsl(206, 61%, 91%);
-    border: 1px solid hsl(0, 100%, 18%)
-}
-
 .container .inner_container .right_div .steps_section:nth-child(2) main .planType:hover{
     background: hsl(206, 61%, 91%);
     border: 1px solid hsl(213, 96%, 18%)
@@ -252,6 +247,11 @@
     color: hsl(213, 96%, 18%);
     font-weight: bold;
     opacity: 1;
+}
+
+.container .inner_container .right_div .steps_section:nth-child(2) main .selectedPlan{
+    background: hsl(206, 61%, 91%);
+    border: 1px solid hsl(213, 96%, 18%)
 }
 
 .container .inner_container .right_div .steps_section:nth-child(2) .payment_type{
@@ -286,16 +286,9 @@
     cursor: pointer;
 }
 
-.toggle_paymentType{
-    background: hsl(213, 96%, 18%);
-    width: 50px;
-    padding: 0.7em 0;
-    border-radius: 50px;
-    padding: 5px;
+.container .inner_container .right_div .steps_section:nth-child(2) .payment_type .toggle_paymentType{
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-    cursor: pointer;
 }
 
 .container .inner_container .right_div .steps_section:nth-child(2) .payment_type .circle{

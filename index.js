@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded',function(){
     document.querySelectorAll('.steps_section').forEach(function(stepsSection){
         stepsSection.style.display = 'none'
     })
+    // 
     if (localStorage.getItem('Username')){
         const userName = localStorage.getItem('Username')
         alert(`WELCOME BACK ${userName.toUpperCase()}`)
@@ -36,27 +37,29 @@ document.addEventListener('DOMContentLoaded',function(){
         localStorage.removeItem(`adonType_${checkBox.dataset.name}`)
         localStorage.removeItem(`adonAmount_${checkBox.dataset.name}`)
     })
-
-    document.querySelectorAll('.planType').forEach(function(planType){
-        localStorage.removeItem('paymentPlan')
-        localStorage.removeItem('paymentPlan_Amount')
-    }) 
+    // 
+    localStorage.removeItem('paymentPlan')
+    localStorage.removeItem('paymentPlan_Amount')
+    // 
+    localStorage.removeItem('TotalAmount')
     // END
+
 
 
 
     // GENERAL function for next and previous btn
     function nextPreviousBtn(number1,number2){
+        // change the display property of the current step to none and displays the next step
         var currentStep = document.querySelector(`#step_${number1}`)
         currentStep.style.display = 'none'
-
         document.querySelector(`#step_${number2}`).style.cssText = `display:block;`
+        // highlights the button of the next step and return the current step button to default
         document.querySelectorAll('.stepsBtn').forEach(function(stepBtn){
             stepBtn.style.cssText = `background:transparent;color:white`
         })
         document.querySelector(`#section_number${number2}`).style.cssText = `background:hsl(206, 94%, 87%);color:hsl(213, 96%, 18%)`
     }
-    // previousBtn
+    // previousBtn: take to the previous section --> displays the previous section 
     document.querySelectorAll('.previous_btn').forEach(function(nextbtn){
         nextbtn.addEventListener('click',function(){
             const value1 = this.dataset.id
@@ -64,7 +67,7 @@ document.addEventListener('DOMContentLoaded',function(){
             nextPreviousBtn(value1,value2)
         })
     })
-    // nextbtn
+    // nextbtn take to the next section --> displays the next section 
     document.querySelectorAll('.next_btn').forEach(function(nextbtn){
         nextbtn.addEventListener('click',function(){
             const value1 = this.dataset.id
@@ -76,7 +79,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
     function saveUserDetails(){
-        // get and save username in localstorage
+        // get and save user details in localstorage
         const username = document.querySelector('#name').value 
         const email = document.querySelector('#email').value
         const telNumber = document.querySelector('#telNumber').value 
@@ -97,15 +100,15 @@ document.addEventListener('DOMContentLoaded',function(){
        document.querySelector(`#step_${value}`).style.display = 'block' 
     }
  
-    // sideBar navigation
+    // sideBar navigation : inspect input fields to make sure details are entered properly
     function nextStepBtn(number1){
         if(!localStorage.getItem('Username')){
             setTimeout(clear,2000)
             let inputFilelds =  document.querySelectorAll('input')
             const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
             if(allinputfields){
-                saveUserDetails()
                 if(email.value.includes('@')){
+                    saveUserDetails()
                     displaySection(number1)
                 }
                 else{
@@ -124,12 +127,12 @@ document.addEventListener('DOMContentLoaded',function(){
 
     }
 
+    // when side buttons are clicked change the display property of all section to none then change the display property of the section connected to that button to block
     document.querySelectorAll('.stepsBtn').forEach(function(stepsBtn){
         stepsBtn.addEventListener('click',function(){
             nextStepBtn(this.dataset.id)
         })
     })
-
 
 
     // STEP 1
@@ -140,7 +143,7 @@ document.addEventListener('DOMContentLoaded',function(){
     function displayErrorLabel(id){
         document.querySelector(`#label_${id}`).innerHTML = 'This field is required'
     }
-    // clear error message when input field is empty
+    // clear error message when input field is empty and return border color back to its normal color
     function clear(){
         document.querySelectorAll('.error_label').forEach(function(error){
              error.innerHTML = ""
@@ -156,8 +159,8 @@ document.addEventListener('DOMContentLoaded',function(){
         let inputFilelds =  document.querySelectorAll('input')
         const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
         if(allinputfields){
-            saveUserDetails()
             if(email.value.includes('@')){
+                saveUserDetails()
                 document.querySelectorAll('.error_label').forEach(function(error){
                     error.innerHTML = ""
                 })
@@ -181,10 +184,11 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     })
 
+    // give the  message if input field is empty and change its border color to red
     function errorInput(){
         document.querySelectorAll('input').forEach(function(inputfields){
             if(inputfields.value == ""){
-                displayErrorLabel(inputfields.dataset.number)
+                document.querySelector(`#label_${inputfields.dataset.number}`).innerHTML = 'This field is required'
                 inputfields.style.cssText = `border: 1px solid hsl(354, 84%, 57%)`
             }
         })
@@ -196,17 +200,16 @@ document.addEventListener('DOMContentLoaded',function(){
     // toggle between monthly and yearly subscription(paymentType)
     document.querySelector('.payment_toggle').addEventListener('click',function(){
         // 
-        if (this.classList.contains('payment_toggle')){
-            // 
-            this.classList.remove('payment_toggle')
-            this.classList.add('toggle_paymentType')
-            // 
+        this.classList.toggle('toggle_paymentType')
+        //  
+        if (this.classList.contains('toggle_paymentType')){
+            // change the display property of all element with the class name monthly to none
             document.querySelectorAll('.monthly').forEach(function(monthly){
                 monthly.style.display = 'none'
             })
-            // 
-            document.querySelectorAll('.yearly').forEach(function(monthly){
-                monthly.style.display = 'block'
+            // change the display property of all element with the class name yearly to block 
+            document.querySelectorAll('.yearly').forEach(function(yearly){
+                yearly.style.display = 'block'
             })
             // converts stored adon plan amount selected to yearly in local storage 
             document.querySelectorAll('.check_box').forEach(function(checkBox){
@@ -215,27 +218,23 @@ document.addEventListener('DOMContentLoaded',function(){
                     localStorage.setItem(`adonAmount_${checkBox.dataset.name}`,`${checkBox.dataset.yearly}`)
                 }
             })
-            // converts selected plan amount to yearly in local storage
+            // // converts selected plan amount to yearly in local storage
             document.querySelectorAll('.planType').forEach(function(planType){
-                if (planType.classList.contains('selectedPlan')){
+                if(planType.classList.contains('selectedPlan')){
                     localStorage.setItem('paymentPlan',`${planType.dataset.name}`)
                     localStorage.setItem('paymentPlan_Amount',`${planType.dataset.yearly}`)
                 }
             }) 
-
         }
-        // 
+        //
         else{
-            // 
-            this.classList.add('payment_toggle')
-            this.classList.remove('toggle_paymentType')
-            // 
+            // change the display property of all element with the class name monthly to block 
             document.querySelectorAll('.monthly').forEach(function(monthly){
                 monthly.style.display = 'block'
             })
-            // 
-            document.querySelectorAll('.yearly').forEach(function(monthly){
-                monthly.style.display = 'none'
+            // change the display property of all element with the class name yearly to none 
+            document.querySelectorAll('.yearly').forEach(function(yearly){
+                yearly.style.display = 'none'
             })
             // converts stored adon plan amount selected to monthly in local storage
             document.querySelectorAll('.check_box').forEach(function(checkBox){
@@ -244,7 +243,7 @@ document.addEventListener('DOMContentLoaded',function(){
                     localStorage.setItem(`adonAmount_${checkBox.dataset.name}`,`${checkBox.dataset.monthly}`)
                 }
             })
-            // converts selected plan amount to yearly in local storage 
+            // // converts selected plan amount to monthly in local storage 
             document.querySelectorAll('.planType').forEach(function(planType){
                 if(planType.classList.contains('selectedPlan')){
                     localStorage.setItem('paymentPlan',`${planType.dataset.name}`)
@@ -253,26 +252,27 @@ document.addEventListener('DOMContentLoaded',function(){
             }) 
             // 
         }
-        // 
+        
     })
 
     //SELECTING PLAN
     document.querySelectorAll('.planType').forEach(function(planType){
         // SAVES PLAN SELECTED BY USER INCLUDING THE PRICE TO LOCAL STORAGE
         planType.addEventListener('click',function(){
-            localStorage.setItem('paymentPlan',`${planType.dataset.name}`)
-            if(document.querySelector('.payment_type').children[1].classList.contains('payment_toggle')){
-                localStorage.setItem('paymentPlan_Amount',`${planType.dataset.monthly}`)
-            }
-            else{
-                localStorage.setItem('paymentPlan_Amount',`${planType.dataset.yearly}`)
-            }
             //1. first it makes all other payment plan neutral then. check 2 for more info
             document.querySelectorAll('.planType').forEach(function(planType){
                 planType.classList.remove('selectedPlan')
             }) 
             // 2. makes selected plan standout by having a different background color and border
-            this.classList.toggle('selectedPlan')
+            planType.classList.toggle('selectedPlan')
+            // 
+            localStorage.setItem('paymentPlan',`${planType.dataset.name}`)
+            if(document.querySelector('.payment_type').children[1].classList.contains('toggle_paymentType')){
+                localStorage.setItem('paymentPlan_Amount',`${planType.dataset.yearly}`)
+            }
+            else{
+                localStorage.setItem('paymentPlan_Amount',`${planType.dataset.monthly}`)
+            }
             
         })
     }) 
@@ -290,11 +290,11 @@ document.addEventListener('DOMContentLoaded',function(){
             if (checkBox.classList.contains('clickedCheckbtn')){
                  // stores data into local storage and checks if its plan is monthly or yearly so it can store approriately
                 localStorage.setItem(`adonType_${checkBox.dataset.name}`,`${checkBox.dataset.name}`)
-                if(document.querySelector('.payment_type').children[1].classList.contains('payment_toggle')){
-                    localStorage.setItem(`adonAmount_${checkBox.dataset.name}`,`${checkBox.dataset.monthly}`)
+                if(document.querySelector('.payment_type').children[1].classList.contains('toggle_paymentType')){
+                    localStorage.setItem(`adonAmount_${checkBox.dataset.name}`,`${checkBox.dataset.yearly}`)
                 }
                 else{
-                    localStorage.setItem(`adonAmount_${checkBox.dataset.name}`,`${checkBox.dataset.yearly}`)
+                    localStorage.setItem(`adonAmount_${checkBox.dataset.name}`,`${checkBox.dataset.monthly}`)
                 }
             }
             else{
@@ -397,11 +397,15 @@ document.addEventListener('DOMContentLoaded',function(){
     // display thank you section after confirming purchase and makes sure user has already selected a plan
     document.querySelector('.confirm').addEventListener('click',function(){
         const totalAmount = localStorage.getItem('TotalAmount')
-        if(totalAmount && totalAmount > 0){
+        if(totalAmount > 0){
             document.querySelectorAll('.steps_section').forEach(function(stepssection){
                 stepssection.style.display = 'none'
             })
             document.querySelector('#step_5').style.display = 'block'
+            // retun all side button to default style
+            document.querySelectorAll('.stepsBtn').forEach(function(stepBtn){
+                stepBtn.style.cssText = `background:transparent;color:white`
+            })
         }
         else{
             alert('NO PLAN HAS BEEN SELECTED')
