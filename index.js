@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded',function(){
     function nextStepBtn(number1){
         if(!localStorage.getItem('Username')){
             setTimeout(clear,2000)
-            let inputFilelds =  document.querySelectorAll('input')
+            let inputFilelds =  document.querySelectorAll('.input')
             const allinputfields = Array.from(inputFilelds).every(input => input.value !== "")
             if(allinputfields){
                 if(email.value.includes('@')){
